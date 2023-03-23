@@ -13,11 +13,12 @@ import swaggerUi from  "swagger-ui-express"
 import userLogRoute from "./router/userLog.Routes";
 import { updateDeviceBySerialNo } from "./service/device.service";
 import { clusterUpdateBySerialNo } from "./service/cluster.service";
-
+import cors from 'cors'
 
 const app  = express()
 app.use(express.json())
 app.use(fileUpload())
+app.use(cors())
 const server = require('http').createServer(app)
 
 
