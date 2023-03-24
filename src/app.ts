@@ -18,7 +18,7 @@ import cors from 'cors'
 const app  = express()
 app.use(express.json())
 app.use(fileUpload())
-app.use(cors())
+app.use(cors({origin: '*'}))
 const server = require('http').createServer(app)
 
 
@@ -97,7 +97,6 @@ app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup(spacs))
 
 app.get('/' , (req : Request , res : Response , next : NextFunction)=>{
   res.send("ok")
-  console.log(req.body?.user)
 })
 
 app.use("/user" , userRoute)
