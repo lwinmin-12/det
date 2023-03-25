@@ -5,9 +5,6 @@ export const deviceSchema = object({
         name : string({
             required_error : "name is required"
         }),
-        deviceId : string({
-            required_error :"device id is require"
-        }),
         serialNo : string({
             required_error :"serial id is require"
         }),

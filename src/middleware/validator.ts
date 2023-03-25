@@ -24,9 +24,13 @@ export const validateToken =async (req: Request, res: Response, next: NextFuncti
   if(!token) {
     return next(new Error("invalid token"))
   }
+
   try{
     let decoded =  checkToken(token)
     let user = await getUser({_id :decoded._id})
+    if(!user){
+      throw new Error('invalid token')
+    }
     req.body.user = user 
   }catch(e : any){
     return next(new Error(e))

@@ -2,6 +2,7 @@ import deviceModel ,{deviceInput , deviceDocument}from "../model/device.model";
 import { FilterQuery, UpdateQuery } from "mongoose";
 import { clusterDocument } from "../model/cluster.model";
 import { addUserLog } from "./userLog.service";
+import { UserDocument } from "../model/user.model";
 export const addDevice = async (payload : deviceInput) => {
     try {
       return await deviceModel.create(payload)
@@ -62,4 +63,23 @@ export const getDevice = async (query :  FilterQuery<deviceDocument>) =>{
          }catch(e){
             throw new Error(e)
          }
+ }
+
+
+ export const deviceAddUser = async (deviceId : deviceDocument['_id'] , userId : UserDocument['_id'])=>{
+   try{
+     await deviceModel.findByIdAndUpdate( deviceId ,{$push : {deviceOwner : userId}} )
+     return await deviceModel.findById(deviceId)
+   }catch(e){
+
+   }
+ }
+
+ export const deviceRemoveUser = async (deviceId : deviceDocument['_id'] , userId : UserDocument['_id'])=>{
+   try{
+     await deviceModel.findByIdAndUpdate( deviceId ,{$pull : {deviceOwner : userId}} )
+     return await deviceModel.findById(deviceId)
+   }catch(e){
+
+   }
  }

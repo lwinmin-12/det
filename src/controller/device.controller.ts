@@ -1,7 +1,8 @@
 import {Request , Response , NextFunction} from 'express'
 import { client } from '../app'
 import { getCluster } from '../service/cluster.service'
-import { addDevice, deleteDevice, deviceAddCluster, deviceRemoveCluster, getDevice, updateDevice } from '../service/device.service'
+import { addDevice, deleteDevice, deviceAddCluster, deviceRemoveCluster, deviceRemoveUser, getDevice, updateDevice } from '../service/device.service'
+import { getUser, userRemoveDevice } from '../service/user.service'
 import { addUserLog } from '../service/userLog.service'
 import fMsg from '../utils/helper'
 
@@ -109,5 +110,16 @@ export const changeDeviceModeHandler = async (req : Request , res : Response , n
     
     client.publish(`spdm/${serialNo}/mobile/mode` , req.body.mode)
     await addUserLog(foundDevice[0]._id.toString() , req.body.user[0]._id , `spdm/${serialNo}/mobile/mode/${req.body.mode}`)
+    fMsg(res , `device mode changed `)
+}
+
+
+export const deviceRemoveUserHandler = async (req : Request , res : Response , next : NextFunction ) =>{
+    let user = await getUser({_id : req.body.user[0]._id })
+    let device = await getDevice({_id : req.body.deviceId })
+    if(!device[0].deviceOwner[0] == req.body.user[0]._id){
+        return  next(new Error ('You have not this permission'))
+    }
+    let result = await deviceRemoveUser(req.body.deviceId , req.body.userId) 
     fMsg(res , `device mode changed `)
 }

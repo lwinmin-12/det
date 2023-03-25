@@ -1,4 +1,4 @@
-import { addDeviceHandler, changeDeviceModeHandler, deleteDeviceHandler, deviceAddClusterHandler, deviceRemoveClusterHandler, getDeviceHandler, updateDeviceHandler } from "../controller/device.controller"
+import { addDeviceHandler, changeDeviceModeHandler, deleteDeviceHandler, deviceAddClusterHandler, deviceRemoveClusterHandler, deviceRemoveUserHandler, getDeviceHandler, updateDeviceHandler } from "../controller/device.controller"
 import { roleValidator } from "../middleware/roleValidator"
 import validateAll, { validateToken } from "../middleware/validator"
 import { allSchemaId } from "../schemas/allSchema"
@@ -18,4 +18,6 @@ deviceRoute.delete('/',validateToken , roleValidator('admin') , deleteDeviceHand
 deviceRoute.patch('/add/cluster',validateToken , roleValidator('admin') , deviceAddClusterHandler)
 deviceRoute.patch('/remove/cluster',validateToken , roleValidator('admin') , deviceRemoveClusterHandler)
 
+
+deviceRoute.patch('/remove/user' , deviceRemoveUserHandler)
 export default deviceRoute

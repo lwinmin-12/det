@@ -1,5 +1,5 @@
 import {Request , Response , NextFunction} from 'express'
-import { getDevice } from '../service/device.service'
+import { deviceAddUser, getDevice } from '../service/device.service'
 import { getPermit } from '../service/permit.service'
 import { getRole } from '../service/role.service'
 import { deleteUser, getUser, loginUser, registerUser, userAddDevice, userAddPermit, userAddRole, userRemoveDevice, userRemovePermit, userRemoveRole } from '../service/user.service'
@@ -139,10 +139,6 @@ export const userAddDeviceHandler = async (req : Request , res : Response , next
   try {
     let user = await getUser({_id : req.body.user[0]._id })
     let device = await getDevice({_id : req.body.deviceId})
-    if(!user[0]?.userId){
-      // next (new Error("You need buy a product"))
-      console.log('need to buy a product')
-    }
     if(!user[0] || !device[0]){
         next(new Error ("role or permit not found"))
     }
@@ -151,6 +147,7 @@ export const userAddDeviceHandler = async (req : Request , res : Response , next
         return next( new Error("device already in exist"))
       }
    let result = await userAddDevice(req.body.user[0]._id , req.body.deviceId)
+   deviceAddUser(device[0]._id , req.body.user[0]._id)
    fMsg(res , "device added" , result)
 }catch(e){
     next(new Error (e))
@@ -160,11 +157,6 @@ export const userAddDeviceHandler = async (req : Request , res : Response , next
 export const userRemoveDeviceHandler = async (req : Request , res : Response , next : NextFunction)=>{
   try {
     let user = await getUser({_id : req.body.user[0]._id })
-    // let device = await getDevice({_id : req.body.deviceId})
-    if(!user[0]?.userId){
-      // next (new Error("You need buy a product"))
-      console.log('need to buy a product')
-    }
     if(!user[0]){
         next(new Error ("role or permit not founds"))
     }

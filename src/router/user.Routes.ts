@@ -28,5 +28,6 @@ userRoute.patch('/remove/permit', validateToken, roleValidator('admin') , userRe
 
 //adding device in user
 userRoute.patch('/add/device',validateToken, validateAll(addDeviceSchema) , userAddDeviceHandler)
-userRoute.patch('/remove/device' , validateToken ,  validateAll(addDeviceSchema) , userRemoveDeviceHandler)
+userRoute.patch('/remove/device' , validateToken , validateAll(addDeviceSchema) , userRemoveDeviceHandler)
+
 export default userRoute
